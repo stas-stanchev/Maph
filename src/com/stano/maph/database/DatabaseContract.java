@@ -24,8 +24,4 @@ public class DatabaseContract {
 		public static final int INDEX_DESCRIPTION = 4;
 		public static final int INDEX_LOCATION = 5;
 	}
-
-	final static String DB_NAME = "maph.db";
-	final static int VERSION = 1;
-	
 }

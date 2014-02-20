@@ -9,6 +9,10 @@ import com.stano.maph.database.DatabaseContract.Tables;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
+
+	final static String DB_NAME = "maph.db";
+	final static int VERSION = 1;
+	
 	private static String CREATE_QUERY = "CREATE TABLE " + Tables.PHOTOS + "("
 			+ PhotoColumns.ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
 			+ PhotoColumns.FILENAME + " TEXT NOT NULL, "
@@ -18,7 +22,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			+ PhotoColumns.LOCATION + " TEXT);";
 	
 	public DatabaseHelper(Context context) {
-		super(context, DatabaseContract.DB_NAME, null, DatabaseContract.VERSION);
+		super(context, DB_NAME, null, VERSION);
 	}
 
 	@Override

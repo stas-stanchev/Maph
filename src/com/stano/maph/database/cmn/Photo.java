@@ -6,6 +6,7 @@ public class Photo implements Serializable {
 
 	private static final long serialVersionUID = -468504116487958300L;
 
+	private int id;
 	private String filename;
 	private Long timestamp;
 	private String title;
@@ -50,6 +51,14 @@ public class Photo implements Serializable {
 
 	public void setLocation(String location) {
 		this.location = location;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 }
