@@ -20,5 +20,6 @@
     <string name="photo_description">Photo description</string>
     <string name="edit_date">Edit date</string>
     <string name="save">Save</string>
+    <string name="reset">Reset</string>
 
 </resources>
