@@ -4,15 +4,15 @@ import java.util.List;
 
 import android.content.Context;
 import android.net.Uri;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView.LayoutParams;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 
+import com.stano.maph.App;
 import com.stano.maph.database.cmn.Photo;
-import com.stano.maph.utils.ImageResizer;
 
 public class GridAdapter extends ArrayAdapter<Photo> {
 
@@ -25,35 +25,20 @@ public class GridAdapter extends ArrayAdapter<Photo> {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		ViewHolder holder = null;
+		ImageView imageView = null;
 		if (convertView == null) {
-			holder = new ViewHolder();
-			convertView = new ImageView(getContext());
-			int widthDp = pxToDp(itemWidth);
-			int heightDp = (int) (widthDp * 0.6);
-			LayoutParams params = new LayoutParams(widthDp, heightDp);
-			convertView.setLayoutParams(params);
-			holder.imageView = (ImageView) convertView;
-			convertView.setTag(holder);
+			imageView = new ImageView(getContext());
+			int height = (int) (itemWidth * 0.75);
+			LayoutParams params = new LayoutParams(itemWidth, height);
+			imageView.setLayoutParams(params);
+			imageView.setScaleType(ScaleType.CENTER_CROP);
 		} else {
-			holder = (ViewHolder) convertView.getTag();
+			imageView = (ImageView) convertView;
 		}
 
-		String filePath = getContext().getExternalFilesDir(ImageResizer.TYPE_PHOTOS).getAbsolutePath()
-				+ getItem(position).getFilename();
-		holder.imageView.setImageURI(Uri.parse(filePath));
+		String filePath = App.getThumbsDirPath() + getItem(position).getFilename();
+		imageView.setImageURI(Uri.parse(filePath));
 
-		return convertView;
+		return imageView;
 	}
-
-	public int pxToDp(int px) {
-	    DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
-	    int dp = Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
-	    return dp;
-	}
-	
-	private class ViewHolder {
-		public ImageView imageView;
-	}
-
 }

@@ -6,6 +6,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
+import com.stano.maph.App;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
@@ -24,7 +26,7 @@ public class ImageResizer {
 		if (fileName == null) {
 			fileName = new File(srcFilePath).getName();
 		}
-		String pathResizedPhoto = context.getExternalFilesDir(TYPE_PHOTOS).getAbsolutePath() + "/" + fileName;
+		String pathResizedPhoto = App.getPhotosDirPath() + fileName;
 		Bitmap sourceBitmap = BitmapFactory.decodeFile(srcFilePath);
 		long imageArea = sourceBitmap.getWidth() * sourceBitmap.getHeight();
 		double scale = imageArea > MAX_SIZE_MEGAPIXELS ? Math.sqrt((double) MAX_SIZE_MEGAPIXELS / imageArea) : 1f;
@@ -39,7 +41,7 @@ public class ImageResizer {
 		if (fileName == null) {
 			fileName = new File(srcFilePath).getName();
 		}
-		String pathThumbnail = context.getExternalFilesDir(TYPE_THUMBS).getAbsolutePath() + "/" + fileName;
+		String pathThumbnail = App.getThumbsDirPath() + "/" + fileName;
 		Bitmap sourceBitmap = BitmapFactory.decodeFile(srcFilePath);
 		Bitmap thumbBitmap = ThumbnailUtils.extractThumbnail(sourceBitmap, THUMB_SIZE_PX, THUMB_SIZE_PX);
 		saveBitmapToFile(pathThumbnail, thumbBitmap);

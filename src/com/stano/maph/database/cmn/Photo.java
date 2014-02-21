@@ -1,10 +1,9 @@
 package com.stano.maph.database.cmn;
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class Photo implements Serializable {
-
-	private static final long serialVersionUID = -468504116487958300L;
+public class Photo implements  Parcelable {
 
 	private int id;
 	private String filename;
@@ -12,6 +11,19 @@ public class Photo implements Serializable {
 	private String title;
 	private String description;
 	private String location;
+
+	public Photo() {
+		
+	}
+	
+	public Photo(Parcel in) {
+		this.id = in.readInt();
+		this.filename = in.readString();
+		this.timestamp = in.readLong();
+		this.title = in.readString();
+		this.description = in.readString();
+		this.location = in.readString();
+	}
 
 	public String getFilename() {
 		return filename;
@@ -59,6 +71,47 @@ public class Photo implements Serializable {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	@Override
+	public int describeContents() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public static final Parcelable.Creator<Photo> CREATOR = new Parcelable.Creator<Photo>() {
+		public Photo createFromParcel(Parcel in) {
+			return new Photo(in);
+		}
+
+		public Photo[] newArray(int size) {
+			return new Photo[size];
+		}
+	};
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeInt(id);
+		dest.writeString(filename);
+		dest.writeLong(timestamp);
+		dest.writeString(title);
+		dest.writeString(description);
+		dest.writeString(location);
+	}
+	
+	public double getLatitude() {
+		return getCoordinate(0);
+	}
+	
+	public double getLongitude() {
+		return getCoordinate(1);
+	}
+
+	private double getCoordinate(int i) {
+		if (location == null) {
+			return 0d;
+		}
+		return Double.parseDouble(location.split(":")[i]);
 	}
 
 }

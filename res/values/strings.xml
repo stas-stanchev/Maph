@@ -9,5 +9,12 @@
     <string name="switch_layout">Switch layout</string>
     <string name="sort_by_title">Sort by title</string>
     <string name="sort_by_date">Sort by date</string>
+    <string name="_photo_title_format">Photo: %1$s</string>
+    <string name="open_map">Open map</string>
+    <string name="close">Close</string>
+    <string name="dialog_title">Photo info</string>
+    <string name="delete_photo">Delete photo</string>
+    <string name="edit_photo">Edit photo</string>
+    <string name="delete_confirm">Are you sure you want to delete this?</string>
 
 </resources>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/menu_map"
+        android:icon="@drawable/ic_action_map"
+        android:showAsAction="always"
+        android:title="@string/open_map"/>
+    <item
+        android:id="@+id/menu_delete"
+        android:icon="@drawable/ic_action_remove"
+        android:showAsAction="always"
+        android:title="@string/delete_photo"/>
+    <item
+        android:id="@+id/menu_edit"
+        android:icon="@drawable/ic_action_edit"
+        android:showAsAction="always"
+        android:title="@string/edit_photo"/>
+
+</menu>
