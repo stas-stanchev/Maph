@@ -198,7 +198,7 @@ public class MainActivity extends Activity implements LocationListener {
 		setProgressBarIndeterminateVisibility(false);
 	}
 
-	protected void displayInfoDialog(Photo photo) {
+	private void displayInfoDialog(Photo photo) {
 		final Dialog dialog = new Dialog(this);
 		dialog.setContentView(R.layout.dialog_info);
 		dialog.setTitle(getString(R.string.dialog_title));
@@ -209,11 +209,10 @@ public class MainActivity extends Activity implements LocationListener {
 		TextView txtDate = (TextView) dialog.findViewById(R.id.txt_date);
 		TextView txtLocation = (TextView) dialog.findViewById(R.id.txt_location);
 
-		SimpleDateFormat format = new SimpleDateFormat("EEE, d MMM HH:mm:ss", Locale.getDefault());
 
 		txtTitle.setText(photo.getTitle());
 		txtDescription.setText(photo.getDescription());
-		txtDate.setText(format.format(new Date(photo.getTimestamp())));
+		txtDate.setText(photo.getFormattedDate());
 
 		Geocoder geocoder = new Geocoder(this, Locale.getDefault());
 		double latitude = photo.getLatitude();

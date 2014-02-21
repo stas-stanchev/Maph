@@ -1,5 +1,9 @@
 package com.stano.maph.database.cmn;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -112,6 +116,11 @@ public class Photo implements  Parcelable {
 			return 0d;
 		}
 		return Double.parseDouble(location.split(":")[i]);
+	}
+	
+	public String getFormattedDate() {
+		SimpleDateFormat format = new SimpleDateFormat("EEE, d MMM HH:mm:ss", Locale.getDefault());
+		return format.format(new Date(timestamp));
 	}
 
 }

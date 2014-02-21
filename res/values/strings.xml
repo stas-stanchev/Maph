@@ -16,5 +16,9 @@
     <string name="delete_photo">Delete photo</string>
     <string name="edit_photo">Edit photo</string>
     <string name="delete_confirm">Are you sure you want to delete this?</string>
+    <string name="photo_title">Photo title</string>
+    <string name="photo_description">Photo description</string>
+    <string name="edit_date">Edit date</string>
+    <string name="save">Save</string>
 
 </resources>
