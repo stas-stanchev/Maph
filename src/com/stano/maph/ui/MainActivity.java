@@ -152,9 +152,16 @@ public class MainActivity extends Activity implements LocationListener {
 		case R.id.menu_sort_by_title:
 			sortByTitle();
 			break;
+		case R.id.menu_map:
+			openMap();
+			break;
 		}
 
 		return true;
+	}
+
+	private void openMap() {
+		startActivity(new Intent(this, MapActivity.class));
 	}
 
 	private void initViews() {
