@@ -225,7 +225,8 @@ public class MapActivity extends Activity implements LocationListener {
 
 	@Override
 	public void onLocationChanged(Location location) {
-		centerCamera(new LatLng(location.getLatitude(), location.getLongitude()));
+		if (action != SINGLE_PHOTO)
+			centerCamera(new LatLng(location.getLatitude(), location.getLongitude()));
 	}
 
 	@Override
