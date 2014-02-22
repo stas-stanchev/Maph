@@ -32,5 +32,10 @@ public class PagerAdapter extends FragmentPagerAdapter {
 	public int getCount() {
 		return listPhotos.size();
 	}
+	
+	@Override
+	public int getItemPosition(Object object) {
+		return 0;
+	}
 
 }

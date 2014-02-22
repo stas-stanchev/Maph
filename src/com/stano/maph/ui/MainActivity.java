@@ -99,8 +99,9 @@ public class MainActivity extends Activity implements LocationListener {
 	protected void onResume() {
 		super.onResume();
 		photoDao.open();
-		listPhotos = photoDao.getAllPhotos();
-		notifyDataSetChanged();
+		listPhotos.clear();
+		listPhotos.addAll(photoDao.getAllPhotos());
+		notifyDataChange();
 	}
 
 	@Override
@@ -161,7 +162,9 @@ public class MainActivity extends Activity implements LocationListener {
 	}
 
 	private void openMap() {
-		startActivity(new Intent(this, MapActivity.class));
+		Intent intent = new Intent(this, MapActivity.class);
+		intent.putExtra(MapActivity.KEY_ACTION, MapActivity.SHOW_ALL);
+		startActivity(intent);
 	}
 
 	private void initViews() {
@@ -270,10 +273,10 @@ public class MainActivity extends Activity implements LocationListener {
 	private void sortList(Comparator<Photo> comparator) {
 		Collections.sort(listPhotos, comparator);
 
-		notifyDataSetChanged();
+		notifyDataChange();
 	}
 
-	private void notifyDataSetChanged() {
+	private void notifyDataChange() {
 		listAdapter.notifyDataSetChanged();
 		gridAdapter.notifyDataSetChanged();
 	}
@@ -392,8 +395,8 @@ public class MainActivity extends Activity implements LocationListener {
 			listPhotos = new ArrayList<Photo>();
 		}
 
-		listPhotos.add(newPhoto);
-		notifyDataSetChanged();
+		listPhotos.add(0, newPhoto);
+		notifyDataChange();
 	}
 
 	public String getCurrentLocationAsString() {

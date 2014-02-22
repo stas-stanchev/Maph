@@ -76,6 +76,26 @@ public class Photo implements  Parcelable {
 	public void setId(int id) {
 		this.id = id;
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof Photo)) {
+			return false;
+		}
+		
+		Photo rhs = (Photo) o;
+		
+		if (this == rhs) {
+			return true;
+		}
+		
+		return this.id == rhs.id;
+	}
+	
+	@Override
+	public String toString() {
+		return "Photo id#" + id;
+	}
 
 	@Override
 	public int describeContents() {

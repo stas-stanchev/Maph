@@ -41,7 +41,7 @@ public class ImageResizer {
 		if (fileName == null) {
 			fileName = new File(srcFilePath).getName();
 		}
-		String pathThumbnail = App.getThumbsDirPath() + "/" + fileName;
+		String pathThumbnail = App.getThumbsDirPath() + fileName;
 		Bitmap sourceBitmap = BitmapFactory.decodeFile(srcFilePath);
 		Bitmap thumbBitmap = ThumbnailUtils.extractThumbnail(sourceBitmap, THUMB_SIZE_PX, THUMB_SIZE_PX);
 		saveBitmapToFile(pathThumbnail, thumbBitmap);

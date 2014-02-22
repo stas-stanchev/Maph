@@ -87,8 +87,10 @@ public class PhotoPreviewActivity extends FragmentActivity {
 	}
 
 	private void showOnMap(Photo currentItem) {
-		// TODO Auto-generated method stub
-		
+		Intent intent = new Intent(this, MapActivity.class);
+		intent.putExtra(MapActivity.KEY_ACTION, MapActivity.SINGLE_PHOTO);
+		intent.putExtra(MapActivity.KEY_PHOTO, currentItem);
+		startActivity(intent);
 	}
 
 	private void editPhoto(Photo currentItem) {
@@ -103,17 +105,17 @@ public class PhotoPreviewActivity extends FragmentActivity {
 		builder.setPositiveButton(android.R.string.ok, new OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-			}
-		});
-		builder.setNegativeButton(android.R.string.cancel, new OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
 				PhotoDAO dao = new PhotoDAO(PhotoPreviewActivity.this);
 				dao.deletePhoto(currentItem);
 				dao.close();
 				listPhotos.remove(currentItem);
 				pagerAdapter.notifyDataSetChanged();
+			}
+		});
+		builder.setNegativeButton(android.R.string.cancel, new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
 			}
 		});
 		
