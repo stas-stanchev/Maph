@@ -3,6 +3,7 @@ package com.stano.maph.ui;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
@@ -13,7 +14,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
@@ -34,6 +34,9 @@ public class MapActivity extends Activity implements LocationListener {
 	// The minimum time between updates in milliseconds
 	private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1; // 1 minute
 
+	public static final String KEY_EXTRA = "extra";
+	public final static int CODE_COORDS = 0x3;
+
 	public final static int SHOW_ALL = 1;
 	public final static int GET_COORDINATES = 2;
 	public final static int SINGLE_PHOTO = 3;
@@ -51,7 +54,9 @@ public class MapActivity extends Activity implements LocationListener {
 	OnMapClickListener clickListener = new OnMapClickListener() {
 		@Override
 		public void onMapClick(LatLng coordinates) {
-
+			String location = String.format("%s:%s", coordinates.latitude,
+					coordinates.longitude);
+			finish(location);
 		}
 	};
 
@@ -67,26 +72,39 @@ public class MapActivity extends Activity implements LocationListener {
 		initMap();
 	}
 
+	protected void finish(String location) {
+		Intent intent = getIntent();
+		intent.putExtra(KEY_EXTRA, location);
+		setResult(CODE_COORDS, intent);
+		finish();
+	}
+
 	private void initLocationManager() {
 		locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-		
-		boolean isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
-		boolean isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+		boolean isGPSEnabled = locationManager
+				.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+		boolean isNetworkEnabled = locationManager
+				.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 		if (isGPSEnabled) {
-			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME_BW_UPDATES,
+			locationManager.requestLocationUpdates(
+					LocationManager.GPS_PROVIDER, MIN_TIME_BW_UPDATES,
 					MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
 		} else if (isNetworkEnabled) {
-			locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME_BW_UPDATES,
+			locationManager.requestLocationUpdates(
+					LocationManager.NETWORK_PROVIDER, MIN_TIME_BW_UPDATES,
 					MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
 		} else {
-			locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, MIN_TIME_BW_UPDATES,
+			locationManager.requestLocationUpdates(
+					LocationManager.PASSIVE_PROVIDER, MIN_TIME_BW_UPDATES,
 					MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
 		}
 	}
 
 	private void initMap() {
-		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
+				.getMap();
 		if (action == GET_COORDINATES) {
 			map.setOnMapClickListener(clickListener);
 		} else if (action == SHOW_ALL) {
@@ -105,11 +123,9 @@ public class MapActivity extends Activity implements LocationListener {
 	}
 
 	private void centerCamera(LatLng coords) {
-		CameraUpdate center = CameraUpdateFactory.newLatLng(coords);
-		CameraUpdate zoom = CameraUpdateFactory.zoomTo(15);
+		map.moveCamera(CameraUpdateFactory.newLatLngZoom(coords, 15));
 
-		map.moveCamera(center);
-		map.animateCamera(zoom);
+		map.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
 	}
 
 	private void centerOnCurrentPosition() {
@@ -117,7 +133,8 @@ public class MapActivity extends Activity implements LocationListener {
 	}
 
 	private void centerOnPhoto() {
-		centerCamera(new LatLng(providedPhoto.getLatitude(), providedPhoto.getLongitude()));
+		centerCamera(new LatLng(providedPhoto.getLatitude(),
+				providedPhoto.getLongitude()));
 	}
 
 	private void loadImagesOnMap() {
@@ -128,10 +145,12 @@ public class MapActivity extends Activity implements LocationListener {
 				PhotoDAO dao = new PhotoDAO(MapActivity.this);
 				ArrayList<Photo> photos = dao.getAllPhotos();
 				for (Photo photo : photos) {
-					String absolutePath = App.getThumbsDirPath() + photo.getFilename();
+					String absolutePath = App.getThumbsDirPath()
+							+ photo.getFilename();
 					Options options = new Options();
 					options.inSampleSize = 4;
-					Bitmap thumbBitmap = BitmapFactory.decodeFile(absolutePath, options);
+					Bitmap thumbBitmap = BitmapFactory.decodeFile(absolutePath,
+							options);
 					publishProgress(photo, thumbBitmap);
 				}
 
@@ -142,13 +161,14 @@ public class MapActivity extends Activity implements LocationListener {
 			protected void onProgressUpdate(Object... values) {
 				createMarker((Photo) values[0], (Bitmap) values[1]);
 			}
-			
+
 		}.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 	}
 
 	private void createMarker(Photo photo, Bitmap image) {
 		LatLng point = new LatLng(photo.getLatitude(), photo.getLongitude());
-		map.addMarker(new MarkerOptions().position(point).title(photo.getTitle()).snippet(photo.getDescription())
+		map.addMarker(new MarkerOptions().position(point)
+				.title(photo.getTitle()).snippet(photo.getDescription())
 				.icon(BitmapDescriptorFactory.fromBitmap(image)));
 	}
 
@@ -162,10 +182,12 @@ public class MapActivity extends Activity implements LocationListener {
 	public LatLng getCurrentLocation() {
 
 		// getting GPS status
-		boolean isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+		boolean isGPSEnabled = locationManager
+				.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
 		// getting network status
-		boolean isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+		boolean isNetworkEnabled = locationManager
+				.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
 		if (!isGPSEnabled && !isNetworkEnabled) {
 			// no network provider is enabled
@@ -175,9 +197,11 @@ public class MapActivity extends Activity implements LocationListener {
 			if (isNetworkEnabled) {
 				Log.d("Network", "Network");
 				if (locationManager != null) {
-					location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+					location = locationManager
+							.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 					if (location != null) {
-						return new LatLng(location.getLatitude(), location.getLongitude());
+						return new LatLng(location.getLatitude(),
+								location.getLongitude());
 					}
 				}
 			}
@@ -186,9 +210,11 @@ public class MapActivity extends Activity implements LocationListener {
 				if (location == null) {
 					Log.d("GPS Enabled", "GPS Enabled");
 					if (locationManager != null) {
-						location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+						location = locationManager
+								.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 						if (location != null) {
-							return new LatLng(location.getLatitude(), location.getLongitude());
+							return new LatLng(location.getLatitude(),
+									location.getLongitude());
 						}
 					}
 				}

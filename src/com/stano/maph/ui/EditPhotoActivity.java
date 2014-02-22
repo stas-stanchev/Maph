@@ -49,6 +49,16 @@ public class EditPhotoActivity extends Activity {
 		}
 		return true;
 	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode != RESULT_OK) {
+			return;
+		}
+		
+		String location = data.getStringExtra(MapActivity.KEY_EXTRA);
+		photo.setLocation(location);
+	}
 
 	private void savePhoto() {
 		photo.setDescription(edtDescription.getText().toString());
@@ -85,8 +95,9 @@ public class EditPhotoActivity extends Activity {
 	}
 
 	private void openMap() {
-		// TODO Auto-generated method stub
-
+		Intent intent = new Intent(this, MapActivity.class);
+		intent.putExtra(MapActivity.KEY_ACTION, MapActivity.GET_COORDINATES);
+		startActivityForResult(intent, MapActivity.CODE_COORDS);
 	}
 
 	/**

@@ -31,7 +31,7 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyC21CNIcgN7CfBogr84wQgpVnBHIk3VlxE" />
+            android:value="AIzaSyC6Ttau9nNeJzRT0TKbBM1x5Rg3vNw29q4" />
 
         <activity
             android:name="com.stano.maph.ui.MainActivity"
