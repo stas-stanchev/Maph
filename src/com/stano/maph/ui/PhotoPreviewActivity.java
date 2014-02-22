@@ -108,8 +108,7 @@ public class PhotoPreviewActivity extends FragmentActivity {
 				PhotoDAO dao = new PhotoDAO(PhotoPreviewActivity.this);
 				dao.deletePhoto(currentItem);
 				dao.close();
-				listPhotos.remove(currentItem);
-				pagerAdapter.notifyDataSetChanged();
+				finish();
 			}
 		});
 		builder.setNegativeButton(android.R.string.cancel, new OnClickListener() {
@@ -120,6 +119,16 @@ public class PhotoPreviewActivity extends FragmentActivity {
 		});
 		
 		builder.create().show();
+	}
+
+	private void updateScreen() {
+		if (listPhotos.size() == 0) {
+			finish();
+		}
+		int position = viewPager.getCurrentItem() > 0 ? viewPager.getCurrentItem() - 1 : 0;
+		pagerAdapter = new PagerAdapter(getSupportFragmentManager(), listPhotos);
+		viewPager.setAdapter(pagerAdapter);
+		viewPager.setCurrentItem(position);
 	}
 
 	private void initPager() {

@@ -75,7 +75,7 @@ public class MapActivity extends Activity implements LocationListener {
 	protected void finish(String location) {
 		Intent intent = getIntent();
 		intent.putExtra(KEY_EXTRA, location);
-		setResult(CODE_COORDS, intent);
+		setResult(RESULT_OK, intent);
 		finish();
 	}
 
@@ -107,9 +107,9 @@ public class MapActivity extends Activity implements LocationListener {
 				.getMap();
 		if (action == GET_COORDINATES) {
 			map.setOnMapClickListener(clickListener);
-		} else if (action == SHOW_ALL) {
+		} else {
 			loadImagesOnMap();
-		}
+		} 
 
 		switch (action) {
 		case SINGLE_PHOTO:

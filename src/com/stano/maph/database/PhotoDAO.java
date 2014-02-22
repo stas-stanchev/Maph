@@ -1,5 +1,6 @@
 package com.stano.maph.database;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import android.content.ContentValues;
@@ -8,6 +9,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.stano.maph.App;
 import com.stano.maph.database.DatabaseContract.PhotoColumns;
 import com.stano.maph.database.DatabaseContract.Tables;
 import com.stano.maph.database.cmn.Photo;
@@ -68,6 +70,9 @@ public class PhotoDAO {
 		checkDb();
 		long id = photo.getId();
 		int affectedRows = database.delete(Tables.PHOTOS, PhotoColumns.ID + "=" + id, null);
+		
+		new File(App.getPhotosDirPath() + photo.getFilename()).delete();
+		new File(App.getThumbsDirPath() + photo.getFilename()).delete();
 
 		return affectedRows > 0;
 	}

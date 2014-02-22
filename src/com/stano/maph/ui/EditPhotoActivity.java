@@ -52,7 +52,7 @@ public class EditPhotoActivity extends Activity {
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode != RESULT_OK) {
+		if (resultCode != RESULT_OK) {
 			return;
 		}
 		
